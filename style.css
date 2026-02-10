@@ -14,7 +14,7 @@ body {
     text-align: center;
     width: 85%;
     max-width: 400px;
-    padding: 20px;
+    z-index: 10;
 }
 
 section {
@@ -22,14 +22,9 @@ section {
     animation: fadeIn 0.8s ease-in-out;
 }
 
-section.active {
-    display: block;
-}
+section.active { display: block; }
 
-h1, h2, h3 {
-    font-family: 'Dancing Script', cursive;
-    color: #d63384;
-}
+h1, h2, h3 { font-family: 'Dancing Script', cursive; color: #d63384; }
 
 button {
     background-color: #ffb7c5;
@@ -40,47 +35,57 @@ button {
     font-weight: bold;
     cursor: pointer;
     margin-top: 15px;
-    transition: transform 0.2s;
+    transition: transform 0.2s, background-color 0.3s;
 }
 
-button:hover {
-    transform: scale(1.05);
-}
+button:hover { transform: scale(1.1); background-color: #ff8fa3; }
 
 input {
-    padding: 10px;
+    padding: 12px;
     border-radius: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #ffb7c5;
     margin-top: 10px;
     text-align: center;
     outline: none;
+    width: 80%;
 }
 
 .highlight {
     font-style: italic;
     color: #c2185b;
-    font-size: 0.9rem;
+    margin-top: 15px;
+    display: block;
 }
 
-#noButton {
-    background-color: #eee;
-    color: #888;
+#noButton { transition: all 0.2s ease; background-color: #eee; color: #888; }
+
+/* Interactive Floating Hearts/Bubbles */
+.bubble {
+    position: absolute;
+    bottom: -50px;
+    background: rgba(255, 183, 197, 0.3);
+    border-radius: 50%;
+    animation: floatUp 8s infinite ease-in;
+    cursor: crosshair;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.type-pop {
+    position: absolute;
+    animation: fadeOutUp 1s forwards;
+    pointer-events: none;
 }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 @keyframes floatUp {
-    to { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    0% { transform: translateY(0); opacity: 0.8; }
+    100% { transform: translateY(-110vh); opacity: 0; }
 }
 
-.bounce {
-    animation: bounce 2s infinite;
+@keyframes fadeOutUp {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-50px); }
 }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
+.bounce { animation: bounce 2s infinite; }
+@keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
