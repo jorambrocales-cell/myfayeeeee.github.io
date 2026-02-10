@@ -13,17 +13,19 @@
         <source src="passenger-seat.mp3" type="audio/mpeg">
     </audio>
 
+    <div id="bubble-container"></div>
+
     <div class="container">
         <section id="page1" class="active">
             <h1>Hello, my Valentine!</h1>
             <p>Enter the secret password to enter:</p>
-            <input type="password" id="passInput" placeholder="Kahit ano love...">
+            <input type="password" id="passInput" placeholder="Enter password...">
             <br>
             <button onclick="checkPassword()">Unlock ❤️</button>
         </section>
 
         <section id="page2">
-            <div class="heart-icon">❤️</div>
+            <div class="heart-icon" style="font-size: 50px;">💖</div>
             <h2 class="typewriter">I love you so much, my Faye.</h2>
             <button onclick="nextPage(3)">Keep reading...</button>
         </section>
@@ -39,7 +41,10 @@
         <section id="page4">
             <p>We'll see each other love this saturdayyy, chat chat nalang nyaknyaknyak!</p>
             <p style="font-size: 0.85rem; margin-top: 20px; color: #888;">Type <b>"i love you so much my baby"</b> to continue:</p>
-            <input type="text" id="loveText" placeholder="Type here..." oninput="checkLoveType()">
+            <div style="position: relative; display: inline-block; width: 100%;">
+                <input type="text" id="loveText" placeholder="Type here..." oninput="checkLoveType(event)">
+                <div id="type-hearts"></div>
+            </div>
             <br>
             <button id="nextAfterType" onclick="nextPage(5)" style="display: none;">Continue ❤️</button>
         </section>
@@ -60,23 +65,20 @@
             <h3>Our Spot</h3>
             <p><strong>Mary's Coffee</strong></p>
             <p>Barlin Street corner Sta Cruz Street,<br>Naga City, Philippines, 4400</p>
-            <p style="margin-top: 20px; font-style: italic; font-size: 0.9rem;">Buttttt, if di available, anywhere you want nalang my love!</p>
+            <p style="margin-top: 20px; font-style: italic; font-size: 0.9rem; color: #d63384;">Buttttt, if di available, anywhere you want nalang my love!</p>
             <button onclick="nextPage(8)">Final message</button>
         </section>
 
         <section id="page8">
             <h2 class="bounce">See you, my loveeee!</h2>
             <p>Really excited to see you, my babyy!</p>
-            <h1 style="font-size: 3rem; margin: 10px 0;">mwaaaa</h1>
-            <div class="floating-hearts">💖✨🌹</div>
+            <h1 style="font-size: 3.5rem; margin: 10px 0;">mwaaaa</h1>
         </section>
     </div>
 
     <script>
         function nextPage(pageNumber) {
-            document.querySelectorAll('section').forEach(section => {
-                section.classList.remove('active');
-            });
+            document.querySelectorAll('section').forEach(section => section.classList.remove('active'));
             document.getElementById('page' + pageNumber).classList.add('active');
             if (pageNumber === 8) createHeartShower();
         }
@@ -85,10 +87,10 @@
             const input = document.getElementById('passInput').value;
             if (input.length > 0) {
                 const audio = document.getElementById('bgMusic');
-                audio.play().catch(e => console.log("Music ready"));
+                audio.play();
                 nextPage(2);
             } else {
-                alert("Enter any password muna love! Hahaha");
+                alert("Enter the password first, baby! ❤️");
             }
         }
 
@@ -101,26 +103,53 @@
             btn.style.top = y + 'px';
         }
 
-        function checkLoveType() {
+        function checkLoveType(e) {
             const input = document.getElementById('loveText').value.toLowerCase();
             const target = "i love you so much my baby";
+            
+            // Pop a heart effect on every keypress
+            const pop = document.createElement('span');
+            pop.innerHTML = '❤️';
+            pop.className = 'type-pop';
+            pop.style.left = (Math.random() * 80 + 10) + '%';
+            document.getElementById('type-hearts').appendChild(pop);
+            setTimeout(() => pop.remove(), 1000);
+
             if (input === target) {
                 document.getElementById('nextAfterType').style.display = 'inline-block';
+                document.getElementById('nextAfterType').classList.add('bounce');
             }
         }
 
         function createHeartShower() {
-            for (let i = 0; i < 30; i++) {
+            for (let i = 0; i < 40; i++) {
                 const heart = document.createElement('div');
-                heart.innerHTML = '❤️';
+                heart.innerHTML = ['❤️', '💖', '🌸', '✨'][Math.floor(Math.random() * 4)];
                 heart.style.position = 'fixed';
                 heart.style.bottom = '-20px';
                 heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-                heart.style.animation = `floatUp ${Math.random() * 3 + 2}s linear forwards`;
+                heart.style.fontSize = (Math.random() * 20 + 15) + 'px';
+                heart.style.animation = `floatUp ${Math.random() * 3 + 3}s linear forwards`;
                 document.body.appendChild(heart);
             }
         }
+
+        // Background Pop-able Bubbles
+        function createBubbles() {
+            const container = document.getElementById('bubble-container');
+            setInterval(() => {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+                const size = Math.random() * 40 + 10 + 'px';
+                bubble.style.width = size;
+                bubble.style.height = size;
+                bubble.style.left = Math.random() * 100 + 'vw';
+                bubble.onclick = () => { bubble.style.transform = 'scale(0)'; setTimeout(() => bubble.remove(), 200); };
+                container.appendChild(bubble);
+                setTimeout(() => bubble.remove(), 8000);
+            }, 1000);
+        }
+        createBubbles();
     </script>
 </body>
 </html>
